@@ -2,6 +2,8 @@ package com.nelioalves.cursomc.services;
 
 import java.util.Date;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +70,11 @@ public class PedidoService {
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
-		emailService.sendOrderConfirmationEmail(obj);
+		try {
+			emailService.sendOrderConfirmationHtmlEmail(obj);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 		return obj;
 	}
-	
 }
